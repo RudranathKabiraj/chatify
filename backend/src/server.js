@@ -4,13 +4,16 @@ import path from "path";
 
 import authRoutes from "./routes/auth.route.js";
 import messageRoutes from "./routes/message.route.js"
+import {connectDB} from "./lib/db.js"
 
-    dotenv.config();
+dotenv.config();
 
 const app = express();
+const __dirname = path.resolve();
 
 const PORT = process.env.PORT || 3000;
-const __dirname = path.resolve();
+app.use(express.json()) //req.body   app.use() registers middleware — functions that run before every route handler.
+
 
 
 app.use("/api/auth",authRoutes)
@@ -27,4 +30,7 @@ if(process.env.NODE_ENV === "production") {
     });
 
 }
-app.listen(PORT, () => console.log("server is running at port: "+PORT));
+app.listen(PORT, () => {
+    console.log("server is running at port: "+PORT)
+    connectDB();
+} );
